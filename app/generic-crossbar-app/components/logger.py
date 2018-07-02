@@ -38,9 +38,12 @@ class ClientSession(ApplicationSession):
         yield self.subscribe(self.log_login, 'wamp.session.on_join')
         yield self.subscribe(self.log_leave, 'wamp.session.on_leave')
 
+    @inlineCallbacks
     def log_message(self, message):
         self.log.info('> Message={message}', message=message)
+        yield self.publish('app.logger.broadcast', message)
 
+    @inlineCallbacks
     def log_login(self, details):
         message = {
             'session': details.get('session'),
@@ -48,17 +51,19 @@ class ClientSession(ApplicationSession):
             'authid': details.get('authid'),
             'authrole': details.get('authrole'),
             'ip': details.get('transport', {}).get('peer'),
-            'sha1': details.get('transport').get('client_cert').get('sha1')
+            'sha1': details.get('transport').get('client_cert', {}).get('sha1')
         }
         self.log.info('> Message={message}', message=message)
+        yield self.publish('app.logger.broadcast', message)
 
+    @inlineCallbacks
     def log_leave(self, details):
         message = {
             'session': details,
             'type': 'leave'
         }
         self.log.info('> Message={message}', message=message)
-
+        yield self.publish('app.logger.broadcast', message)
 
 if __name__ == '__main__':
     #

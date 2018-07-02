@@ -2,7 +2,7 @@
 import txaio
 import argparse
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
-from autobahn.wamp.types import RegisterOptions
+from autobahn.wamp.types import RegisterOptions, SubscribeOptions
 from twisted.internet import ssl, reactor
 from twisted.internet.defer import inlineCallbacks
 from setproctitle import setproctitle
@@ -37,13 +37,19 @@ class ClientSession(ApplicationSession):
         options = RegisterOptions(invoke='roundrobin')
         yield self.register(self.authenticate_server, 'app.security.server.authenticate', options)
         yield self.register(self.authorize_server, 'app.security.server.authorize', options)
+        yield self.subscribe(self.dummy, 'app.logger.broadcast', SubscribeOptions(details=True))
+
+    def dummy(self, msg, details=None):
+        self.log.info(" *** DUMMY ***")
+        print(msg)
+        print(details)
 
     def authorize_server(self, session, uri, action, options, details=None):
         self.log.debug('{name} :: Authorize authid=({authid}) uri=({uri}) action=({action})',
-                      name=self.conf.name,
-                      authid=session.get('authid'),
-                      uri=uri,
-                      action=action)
+                       name=self.conf.name,
+                       authid=session.get('authid'),
+                       uri=uri,
+                       action=action)
 
         logger_conf.session.call('app.logger.log_message', {
             'realm': self.conf.name,

@@ -76,8 +76,6 @@ Note that we also have two loggers, and some logging will be split over the two 
 
 - Currently this codebase has been compiled from historical examples and code, it may contain some snippets that are redundant or indeed use some methods that have since been superceeded. We will improve on this over time.
 
-- Part of the example was (is) to include a UI to view the output from the logging daemon, you may see some artifacts in the code relating to this, however the code itself is not yet included.
-
 - The ***utils*** folder contains programmatic examples (python) of how to create both server and related client certificates, but currently only handled self-signed certificates.
 
 - Profiles are handled using .INI files. This isn't necessarily a right or wrong way to handle settings and it may or may not suit your needs, also included are ***argparse*** examples if that's your preference, or if you're using a PAAS (Heroku, CF etc) you will probably want to convert to environment variables.
@@ -86,7 +84,8 @@ Note that we also have two loggers, and some logging will be split over the two 
 
 - Please refer to the ***Makefile*** for tips on how to run the components.
 
+- NOTE: modern web browsers are generally unhappy with self-signed certificated, and this also applies to websocket connections. If you find you get a certificate error running the UI, it's because websockets don't have the ability to pop up the warning box you would generally see the browser display when it encounters self-signed certs .. to get around this, point your browser at; https://localhost:8443/ws .. this **will** pop up the certificate warning box .. if you approve the security exception and go back to the UI, it should let you in. (the comprehensive solution is to use a LetsEncrypt certificate)
+
 ### Misc
 
-- TODO :: Tiny UI to view logs
 - TODO :: Example using letsEncrypt certificates

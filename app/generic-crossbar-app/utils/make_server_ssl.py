@@ -40,7 +40,7 @@ if __name__ == '__main__':
     crt.get_subject().L = args.city or 'Pontypridd'
     crt.get_subject().O = args.company or 'Crossbar.IO'
     crt.get_subject().OU = args.org or 'XBR'
-    crt.get_subject().CN = args.host or gethostname()
+    crt.get_subject().CN = args.host or 'localhost'
     crt.set_serial_number(serial)
     crt.gmtime_adj_notBefore(0)
     crt.gmtime_adj_notAfter(7*24*60*60*(args.weeks or 52))

@@ -19,8 +19,13 @@ class Interface {
       self._log_realm._session.subscribe(
         "",
         function (args, kwargs, details) {
-          // eslint-disable-next-line no-console
-          console.log(args, kwargs, details)
+          self._vue.$root.$store.dispatch('add_events', {
+            timestamp: new Date(),
+            topic: details.topic,
+            authid: details.publisher_authid,
+            role: details.publisher_authrole,
+            message: args[0]
+          })
         },
         {match: 'prefix'}
       )
@@ -28,16 +33,3 @@ class Interface {
   }
 }
 export default { Interface }
-            
-//   self._log_realm.subscribe("",
-//     function (args, kwargs, details) {
-//       // eslint-disable-next-line no-console
-//       console.log(args, kwargs, details)
-//       self._log.info(`Data> ${args} :: ${kwargs} :: ${details}`)
-//     },
-//     {match: 'prefix', details: true},
-//     function () {
-//       self._log_realm._buffered = false
-//     }
-//   )
-// })

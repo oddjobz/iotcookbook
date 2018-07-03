@@ -45,9 +45,7 @@ class Authentication {
     }
     function close (reason, details) {
       setTimeout(function () {
-        if (!self._session) {
-          vue.$store.dispatch(self._conn, false)
-        }
+        vue.$store.dispatch(self._conn, false)
       }, 250)
       if (!connected && self._failure) {
         // failed to open a connection
@@ -64,21 +62,9 @@ class Authentication {
           break
         case 'unreachable':
           log.warning('Unable to connect to server')
-          // window.vm.$root.$toast.open({
-          //   duration: 5000,
-          //   message: `Unable to connect to the specified Server!`,
-          //   position: 'is-top',
-          //   type: 'is-danger'
-          // })
           break
         case 'unsupported':
           log.warning('No websocket transport')
-          // self._vue.$root.$toast.open({
-          //   duration: 5000,
-          //   message: `Your profile is broken, please correct it!`,
-          //   position: 'is-top',
-          //   type: 'is-danger'
-          // })
           return
       }
       switch (details.reason) {
@@ -110,13 +96,8 @@ class Authentication {
     let queue = []
     let timer = null
 
-    // let record = function (topic, data) {
-    //   if (self._vue) self._vue.$root.$store.dispatch('add_event', { when: new Date(), type: self._config.type, topic: topic, data: data })
-    // }
-
     let wrapper = function (args, kwargs, details) {
       if (!self._buffered) {
-        // record(topic, data)
         return handler(args, kwargs, details)
       }
       queue.push([args, kwargs, details])
@@ -125,7 +106,6 @@ class Authentication {
           self._log.debug(`${self._buffered} :: Ping: ${topic} :: ${queue.length}`)
           if (self._buffered) return
           for (let event of queue) {
-            // record(topic, data)
             handler(...event)
           }
           queue = []

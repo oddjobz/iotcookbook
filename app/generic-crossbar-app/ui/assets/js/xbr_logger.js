@@ -48,7 +48,13 @@ class Logger {
     this.log(ERROR, message)
   }
   log (level, message) {
-    let where = new Error().stack.split('\n')[3].split('(').pop()
+    // eslint-disable-next-line no-console
+    let where = ''
+    try {
+      where = new Error().stack.split('\n')[3].split('(')[1].split(')')[0]
+    } catch {
+      where = ''
+    }
     let colour = ''
     switch (level) {
       case INFO:

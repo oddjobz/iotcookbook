@@ -89,3 +89,7 @@ Note that we also have two loggers, and some logging will be split over the two 
 ### Misc
 
 - TODO :: Example using letsEncrypt certificates
+
+### UI Screenshot
+
+![UI Screenshot](docs/images/ui_screenshot.png)
